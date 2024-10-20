@@ -110,7 +110,7 @@ public final class Bit {
     public static boolean[] toBitArray(byte value){
         boolean[] bitArray = new boolean[8];
         for (int i = 0; i < 8; i++){
-            bitArray[i] = getXthBit(value, i);
+            bitArray[i] = getXthBit(value, 7 - i);
         }
         return bitArray;
     }
