@@ -36,6 +36,7 @@ public final class Text {
      * @return bytes representation of the String in the <b>UTF-8</b> format
      */
     public static byte[] toBytes(String str){
+
         return str.getBytes(StandardCharsets.UTF_8);
     }
 
@@ -46,8 +47,16 @@ public final class Text {
      * @return <b>UTF-8</b> representation of the string in the <b>bit array</b> format
      */
     public static boolean[] toBitArray(String str){
+        byte[] byteArray = toBytes(str);
+        int index = 0;
+        boolean[] bitArray = new boolean[byteArray.length*8];
+        for (byte b : byteArray) {
+            boolean[] bits = Bit.toBitArray(b);
+            System.arraycopy(bits, 0, bitArray, index, bits.length);
+            index += bits.length;
+        }
 
-        return Helper.fail("NOT IMPLEMENTED");
+        return bitArray;
     }
     /**
      * Convert a given <b>byte[]</b> into a <b>String</b> following the <b>UTF-8</b> convention
@@ -64,6 +73,7 @@ public final class Text {
      * @return <b>UTF-8 String</b> representation of the bit array
      */
     public static String toString(boolean[] bitArray) {
+
         return Helper.fail("NOT IMPLEMENTED");
     }
 
