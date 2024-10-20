@@ -36,7 +36,17 @@ public final class Bit {
      * @return embedded value
      */
     public static int embedInXthBit(int value, boolean m, int pos) {
-        return Helper.fail("NOT IMPLEMENTED");
+        int newValue;
+        int numBits = Integer.SIZE;
+        assert pos >= 0 && pos < numBits : "position must be within 0 and 32";
+
+        int tempBit = (1 << pos);
+        if (m) {
+            newValue = value | tempBit;
+        } else {
+            newValue = value & ~tempBit;
+        }
+        return newValue;
     }
 
     /**
@@ -47,7 +57,7 @@ public final class Bit {
      * @return embedded value
      */
     public static int embedInLSB(int value, boolean m){
-        return Helper.fail("NOT IMPLEMENTED");
+        return embedInXthBit(value, m, 0);
     }
 
     /**
@@ -58,7 +68,10 @@ public final class Bit {
      * @return <code>true</code> if the bit is '1' and <code>false</code> otherwise
      */
     public static boolean getXthBit(int value, int pos) {
-        return Helper.fail("NOT IMPLEMENTED");
+        int numBits = Integer.SIZE;
+        assert pos >= 0 && pos < numBits : "position must be between 0 and" + Integer.SIZE +"inclusive";
+        int bit = (value >> pos) & 1;
+        return bit == 1;
     }
 
     /**
@@ -67,8 +80,11 @@ public final class Bit {
      * @param value value to extract from
      * @return <code>true</code> if the bit is '1' and <code>false</code> otherwise
      */
+
+
+
     public static boolean getLSB(int value) {
-        return Helper.fail("NOT IMPLEMENTED");
+        return getXthBit(value, 0);
     }
 
     // ============================================================================================
@@ -92,7 +108,11 @@ public final class Bit {
      * @return bit array representation of the value
      */
     public static boolean[] toBitArray(byte value){
-        return Helper.fail("NOT IMPLEMENTED");
+        boolean[] bitArray = new boolean[8];
+        for (int i = 0; i < 8; i++){
+            bitArray[i] = getXthBit(value, 7 - i);
+        }
+        return bitArray;
     }
 
     /**
@@ -112,7 +132,12 @@ public final class Bit {
      * @return the byte representation of the bit array
      */
     public static byte toByte(boolean[] bitArray){
-        return Helper.fail("NOT IMPLEMENTED");
+        assert bitArray.length == 8 : "no input";
+        int value = 0;
+        for (int i = 0; i < bitArray.length; i++){
+            value = embedInXthBit(value, bitArray[i], bitArray.length - i);
+        }
+        byte val = (byte) value;
+        return val;
     }
-
 }

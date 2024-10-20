@@ -46,9 +46,9 @@ public final class Text {
      * @return <b>UTF-8</b> representation of the string in the <b>bit array</b> format
      */
     public static boolean[] toBitArray(String str){
+
         return Helper.fail("NOT IMPLEMENTED");
     }
-
     /**
      * Convert a given <b>byte[]</b> into a <b>String</b> following the <b>UTF-8</b> convention
      * @param bytes String in the byte array format

@@ -54,7 +54,7 @@ public final class Main {
         //assert testGetLSB();
         //assert testEmbedInXthBit();
         //assert testEmbedInLSB();
-        //assert testByteConversion();
+        assert testByteConversion();
         // ========== Test Text ==========
         //assert testToBitArray();
         Helper.dialog("Tests", "Bit and Text manipulation passed");
