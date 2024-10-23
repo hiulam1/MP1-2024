@@ -97,7 +97,8 @@ public final class Image {
      * @return gray scaling of the given pixel
      */
     public static int gray(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        int average = Byte.toUnsignedInt(red(pixel)) + Byte.toUnsignedInt(green(pixel)) + Byte.toUnsignedInt(blue(pixel));
+        return average / 3;
     }
 
     /**
