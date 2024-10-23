@@ -39,7 +39,6 @@ public final class Image {
     public static int argb(byte alpha, byte red, byte green, byte blue){
         int argb;
         argb = ((int)(alpha) << 24) | ((int)(red) << 16) | ((int)(green) << 8) | ((int)(blue));
-        System.out.println(argb);
         return argb;
     }
 
@@ -52,7 +51,6 @@ public final class Image {
     public static byte alpha(int pixel){
         byte alpha;
         alpha = (byte) ((pixel >> 24) & 255);
-        System.out.println(alpha);
         return alpha;
     }
 
@@ -65,7 +63,6 @@ public final class Image {
     public static byte red(int pixel){
         byte red;
         red = (byte) ((pixel >> 16) & 255);
-        System.out.println(red);
         return red;
     }
 
@@ -78,7 +75,6 @@ public final class Image {
     public static byte green(int pixel){
         byte green;
         green = (byte) ((pixel >> 8) & 255);
-        System.out.println(green);
         return green;
     }
 
@@ -91,7 +87,6 @@ public final class Image {
     public static byte blue(int pixel){
         byte blue;
         blue = (byte) (pixel & 255);
-        System.out.println(blue);
         return blue;
     }
 
