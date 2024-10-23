@@ -38,7 +38,7 @@ public final class Image {
      */
     public static int argb(byte alpha, byte red, byte green, byte blue){
         int argb;
-        argb = ((int)(alpha) << 24) | ((int)(red) << 16) | ((int)(green) << 8) | ((int)(blue));
+        argb = (Byte.toUnsignedInt(alpha) << 24) | (Byte.toUnsignedInt(red) << 16) | (Byte.toUnsignedInt(green) << 8) | (Byte.toUnsignedInt(blue));
         return argb;
     }
 
