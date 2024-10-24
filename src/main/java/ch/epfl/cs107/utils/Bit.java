@@ -108,6 +108,7 @@ public final class Bit {
      * @return bit array representation of the value
      */
     public static boolean[] toBitArray(byte value){
+        assert value >= -127 && value <= 128: "should be between -127 and 128";
         boolean[] bitArray = new boolean[8];
         for (int i = 0; i < 8; i++){
             bitArray[i] = getXthBit(value, 7 - i);
@@ -132,12 +133,11 @@ public final class Bit {
      * @return the byte representation of the bit array
      */
     public static byte toByte(boolean[] bitArray){
-        assert bitArray.length == 8 : "no input";
+        assert bitArray.length <= 8: "not valid";
         int value = 0;
         for (int i = 0; i < bitArray.length; i++){
-            value = embedInXthBit(value, bitArray[i], bitArray.length - i);
+            value = embedInXthBit(value, bitArray[i], i);
         }
-        byte val = (byte) value;
-        return val;
+        return (byte) value;
     }
 }

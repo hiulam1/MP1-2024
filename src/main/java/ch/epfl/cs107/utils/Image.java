@@ -37,7 +37,9 @@ public final class Image {
      * @return packed value of the pixel
      */
     public static int argb(byte alpha, byte red, byte green, byte blue){
-        return Helper.fail("NOT IMPLEMENTED");
+        int argb;
+        argb = (Byte.toUnsignedInt(alpha) << 24) | (Byte.toUnsignedInt(red) << 16) | (Byte.toUnsignedInt(green) << 8) | (Byte.toUnsignedInt(blue));
+        return argb;
     }
 
     /**
@@ -47,7 +49,9 @@ public final class Image {
      * @return the alpha component of the pixel
      */
     public static byte alpha(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        byte alpha;
+        alpha = (byte) ((pixel >> 24) & 255);
+        return alpha;
     }
 
     /**
@@ -57,7 +61,9 @@ public final class Image {
      * @return the red component of the pixel
      */
     public static byte red(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        byte red;
+        red = (byte) ((pixel >> 16) & 255);
+        return red;
     }
 
     /**
@@ -67,7 +73,9 @@ public final class Image {
      * @return the green component of the pixel
      */
     public static byte green(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        byte green;
+        green = (byte) ((pixel >> 8) & 255);
+        return green;
     }
 
     /**
@@ -77,7 +85,9 @@ public final class Image {
      * @return the blue component of the pixel
      */
     public static byte blue(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        byte blue;
+        blue = (byte) (pixel & 255);
+        return blue;
     }
 
     /**
@@ -87,7 +97,8 @@ public final class Image {
      * @return gray scaling of the given pixel
      */
     public static int gray(int pixel){
-        return Helper.fail("NOT IMPLEMENTED");
+        int average = Byte.toUnsignedInt(red(pixel)) + Byte.toUnsignedInt(green(pixel)) + Byte.toUnsignedInt(blue(pixel));
+        return average / 3;
     }
 
     /**
