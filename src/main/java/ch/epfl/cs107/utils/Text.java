@@ -47,6 +47,8 @@ public final class Text {
      * @return <b>UTF-8</b> representation of the string in the <b>bit array</b> format
      */
     public static boolean[] toBitArray(String str){
+        assert str != null: "string must not be empty";
+
         byte[] byteArray = toBytes(str);
         int index = 0;
         boolean[] bitArray = new boolean[byteArray.length*8];
@@ -73,8 +75,22 @@ public final class Text {
      * @return <b>UTF-8 String</b> representation of the bit array
      */
     public static String toString(boolean[] bitArray) {
+        assert bitArray.length % 8 == 0: "bit array must be divisible by 8";
+        assert bitArray.length != 0: "bit array cannot be empty";
+        byte[] byteArray = new byte[bitArray.length/8];
+        // stock every 8 bit into a bit array
+        // then convert to byte using toByte
+        // stock byte in byte array
+        // convert byte array to string
+        for (int j = 0; j < byteArray.length; j++) {
+            byte newByte;
+            boolean[] oneByte = new boolean[8];
+                System.arraycopy(bitArray, 8*j, oneByte, 0, 8);
+                newByte = Bit.toByte(oneByte);
+                byteArray[j] = newByte;
+        }
 
-        return Helper.fail("NOT IMPLEMENTED");
+        return Text.toString(byteArray);
     }
 
 }
