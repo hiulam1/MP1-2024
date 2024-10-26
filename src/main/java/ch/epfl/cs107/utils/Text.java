@@ -36,6 +36,7 @@ public final class Text {
      * @return bytes representation of the String in the <b>UTF-8</b> format
      */
     public static byte[] toBytes(String str){
+
         return str.getBytes(StandardCharsets.UTF_8);
     }
 
@@ -46,8 +47,24 @@ public final class Text {
      * @return <b>UTF-8</b> representation of the string in the <b>bit array</b> format
      */
     public static boolean[] toBitArray(String str){
-
-        return Helper.fail("NOT IMPLEMENTED");
+        assert str != null: "string must not be empty";
+        byte[] byteArray = toBytes(str);
+        int index = 0;
+        boolean[] bitArray = new boolean[byteArray.length * 8];
+        boolean[] bits = new boolean[8];
+        for (byte b : byteArray) {
+            int n = Byte.toUnsignedInt(b);
+            if (n - b == 256){
+                for (int i = 0; i < 8; i++){
+                    bits[7 - i] = Bit.getXthBit(b, i);
+                }
+            } else{
+                bits = Bit.toBitArray(b);
+            }
+            System.arraycopy(bits, 0, bitArray, index, bits.length);
+            index += bits.length;
+        }
+        return bitArray;
     }
     /**
      * Convert a given <b>byte[]</b> into a <b>String</b> following the <b>UTF-8</b> convention
@@ -55,6 +72,7 @@ public final class Text {
      * @return String representation using the {@link String} type
      */
     public static String toString(byte[] bytes) {
+
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
@@ -64,7 +82,21 @@ public final class Text {
      * @return <b>UTF-8 String</b> representation of the bit array
      */
     public static String toString(boolean[] bitArray) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert bitArray.length % 8 == 0: "bit array must be divisible by 8";
+        assert bitArray.length != 0: "bit array cannot be empty";
+        byte[] byteArray = new byte[bitArray.length / 8];
+        // stock every 8 bit into a bit array
+        // then convert to byte using toByte
+        // stock byte in byte array
+        // convert byte array to string
+        boolean[] oneByte = new boolean[8];
+        for (int j = 0; j < byteArray.length; j++) {
+            byte newByte;
+            System.arraycopy(bitArray, 8 * j, oneByte, 0, 8);
+            newByte = Bit.toByte(oneByte);
+            byteArray[j] = newByte;
+        }
+        return Text.toString(byteArray);
     }
 
 }
