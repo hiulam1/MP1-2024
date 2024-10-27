@@ -54,7 +54,14 @@ public class TextSteganography {
      * @return extracted message
      */
     public static boolean[] revealBitArray(int[][] image) {
-        return Helper.fail("NOT IMPLEMENTED");
+        boolean[] bits = new boolean[image.length * image[0].length];
+        int index = 0;
+        for(int i = 0; i < image.length; i ++){
+            for(int j = 0; j < image[0].length; j ++){
+                bits[index++] = Bit.getLSB(image[i][j]);
+            }
+        }
+        return bits;
     }
 
 
@@ -86,7 +93,16 @@ public class TextSteganography {
      * @return extracted message
      */
     public static byte[] revealText(int[][] image) {
-        return Helper.fail("NOT IMPLEMENTED");
+        boolean[] bits = revealBitArray(image);
+        boolean[] transfer = new boolean[8];
+        byte[] values = new byte[bits.length / 8];
+        for(int i = 0; i < bits.length / 8; i++){
+            for(int j = 0; j < 8; j++){
+                System.arraycopy(bits, 8 * i , transfer, j , 8);
+            }
+            values[i] = Bit.toByte(transfer);
+        }
+        return values;
     }
 
 }
