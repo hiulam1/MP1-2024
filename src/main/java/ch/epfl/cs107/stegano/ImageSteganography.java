@@ -84,7 +84,13 @@ public final class ImageSteganography {
      * @return binary representation of the hidden image
      */
     public static boolean[][] revealBW(int[][] image) {
-        return Helper.fail("NOT IMPLEMENTED");
+        boolean[][] bits = new boolean[image.length][image[0].length];
+        for(int i = 0; i < image.length; i++) {
+            for (int j = 0; j < image[0].length; j++) {
+                bits[i][j] = Bit.getLSB(image[i][j]);
+            }
+        }
+        return bits;
     }
 
 }
