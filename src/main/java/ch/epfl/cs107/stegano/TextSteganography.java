@@ -76,11 +76,10 @@ public class TextSteganography {
             boolean[] bitArray = toBitArray(message[i]);
             System.arraycopy(bitArray, 0, bits, i * 8, 8);
         }
-        System.out.println(java.util.Arrays.toString(bits));
         newImage = embedBitArray(cover, bits);
         return newImage;
     }
-
+    
     /**
      * Extract a String from an image
      * @param image Image to extract from
