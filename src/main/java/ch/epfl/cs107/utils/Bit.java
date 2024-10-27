@@ -111,7 +111,7 @@ public final class Bit {
         assert value >= -127 && value <= 128: "should be between -127 and 128";
         boolean[] bitArray = new boolean[8];
         for (int i = 0; i < 8; i++){
-            bitArray[i] = getXthBit(value, i);
+            bitArray[i] = getXthBit(value, 7 - i);
         }
         return bitArray;
     }
