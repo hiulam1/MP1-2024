@@ -136,7 +136,7 @@ public final class Bit {
         assert bitArray.length <= 8: "not valid";
         int value = 0;
         for (int i = 0; i < bitArray.length; i++){
-            value = embedInXthBit(value, bitArray[i], i);
+            value = embedInXthBit(value, bitArray[bitArray.length - i - 1], i);
         }
         return (byte) value;
     }
