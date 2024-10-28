@@ -1,16 +1,5 @@
 package ch.epfl.cs107.crypto;
 
-import ch.epfl.cs107.Helper;
-
-import static ch.epfl.cs107.utils.Text.*;
-import static ch.epfl.cs107.utils.Image.*;
-import static ch.epfl.cs107.utils.Bit.*;
-import static ch.epfl.cs107.stegano.ImageSteganography.*;
-import static ch.epfl.cs107.stegano.TextSteganography.*;
-import static ch.epfl.cs107.crypto.Encrypt.*;
-import static ch.epfl.cs107.crypto.Decrypt.*;
-import static ch.epfl.cs107.Main.*;
-
 /**
  * <b>Task 2: </b>Utility class to encrypt a given plain text.
  *
@@ -36,7 +25,12 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] caesar(byte[] plainText, byte key) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] encrypted = new byte[plainText.length];
+        for (int i = 0; i < plainText.length; i++) {
+            int result = plainText[i] + key;
+            encrypted[i] = (byte) result;
+        }
+        return encrypted;
     }
 
     // ============================================================================================
@@ -52,7 +46,12 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] vigenere(byte[] plainText, byte[] keyword) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] encrypted = new byte[plainText.length];
+        for (int i = 0; i < plainText.length; i++) {
+            int modulo = i % keyword.length;
+            encrypted[i] = (byte) (plainText[i] + keyword[modulo]);
+        }
+        return encrypted;
     }
 
     // ============================================================================================
@@ -65,8 +64,40 @@ public final class Encrypt {
      * @param iv the pad of size BLOCKSIZE we use to start the chain encoding
      * @return an encoded byte array
      */
+
     public static byte[] cbc(byte[] plainText, byte[] iv) {
-        return Helper.fail("NOT IMPLEMENTED");
+
+        int blockSize = iv.length;
+        int numberBlocks = plainText.length / blockSize;
+        int remainingBytes = plainText.length % blockSize;
+
+        byte[] encrypted = new byte[plainText.length];
+        byte[] previousPad = iv.clone();
+
+        for (int block = 0; block < numberBlocks ; block++) {
+            int beg = block * blockSize;
+
+            byte[] currentPlainBlock = new byte[blockSize];
+            System.arraycopy(plainText, beg, currentPlainBlock, 0, blockSize);
+
+            byte[] currentEncodedBlock = oneTimePad(currentPlainBlock, previousPad);
+            previousPad = currentEncodedBlock;
+            System.arraycopy(currentEncodedBlock, 0, encrypted, beg, blockSize);
+        }
+        if (remainingBytes > 0) {
+            int beg = blockSize * numberBlocks;
+
+            byte[] currentPlainBlock = new byte[remainingBytes];
+            System.arraycopy(plainText, beg, currentPlainBlock, 0, remainingBytes);
+            byte[] pad = new byte[remainingBytes];
+
+            System.arraycopy(previousPad, 0, pad, 0, remainingBytes);
+
+            byte[] finalEncrypted = oneTimePad(currentPlainBlock, pad);
+
+            System.arraycopy(finalEncrypted, 0, encrypted, beg, remainingBytes);
+        }
+        return encrypted;
     }
 
     // ============================================================================================
@@ -80,7 +111,12 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] xor(byte[] plainText, byte key) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] encrypted = new byte[plainText.length];
+        for (int i = 0; i < plainText.length; i++) {
+            encrypted[i] = (byte) (plainText[i]^key);
+        }
+
+        return encrypted;
     }
 
     // ============================================================================================
@@ -95,7 +131,14 @@ public final class Encrypt {
      * @return an encoded byte array
      */
     public static byte[] oneTimePad(byte[] plainText, byte[] pad) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert plainText.length == pad.length: "pad length must be the same as message length";
+        assert pad != null: "pad cannot be null";
+        byte[] encrypted = new byte[plainText.length];
+        for (int i = 0; i < plainText.length; i++) {
+            encrypted[i] = (byte) (plainText[i]^pad[i]);
+        }
+
+        return encrypted;
     }
 
     /**
@@ -105,7 +148,7 @@ public final class Encrypt {
      * @param result Array containing the result after the execution
      */
     public static void oneTimePad(byte[] plainText, byte[] pad, byte[] result) {
-        Helper.fail("NOT IMPLEMENTED");
+        result = oneTimePad(plainText, pad);
     }
 
 }
