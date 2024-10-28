@@ -34,16 +34,34 @@ public class TextSteganography {
      * @return ARGB image with the message embedded
      */
     public static int[][] embedBitArray(int[][] cover, boolean[] message) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert message.length <= cover.length * cover[0].length;
+        int[][] newImage = new int[cover.length][cover[0].length];
+        for(int i = 0; i < cover.length; i++){
+            for(int j = 0; j < cover[0].length; j++){
+                newImage[i][j] = cover[i][j];
+            }
+        }
+        for(int i = 0; i < message.length; i++) {
+            int row = i / cover[0].length;
+            int column = i % cover[0].length;
+            newImage[row][column] = embedInLSB(cover[row][column], message[i]);
+        }
+        return newImage;
     }
-
     /**
      * Extract a bitmap from an image
      * @param image Image to extract from
      * @return extracted message
      */
     public static boolean[] revealBitArray(int[][] image) {
-        return Helper.fail("NOT IMPLEMENTED");
+        boolean[] bits = new boolean[image.length * image[0].length];
+        int index = 0;
+        for(int i = 0; i < image.length; i ++){
+            for(int j = 0; j < image[0].length; j ++){
+                bits[index++] = Bit.getLSB(image[i][j]);
+            }
+        }
+        return bits;
     }
 
 
@@ -59,16 +77,32 @@ public class TextSteganography {
      * @return ARGB image with the message embedded
      */
     public static int[][] embedText(int[][] cover, byte[] message) {
-        return Helper.fail("NOT IMPLEMENTED");
+        int[][] newImage = new int[cover.length][cover[0].length];
+        boolean[] bits = new boolean[message.length * 8];
+        for (int i = 0; i < message.length; i++) {
+            boolean[] bitArray = toBitArray(message[i]);
+            System.arraycopy(bitArray, 0, bits, i * 8, 8);
+        }
+        newImage = embedBitArray(cover, bits);
+        return newImage;
     }
-
+    
     /**
      * Extract a String from an image
      * @param image Image to extract from
      * @return extracted message
      */
     public static byte[] revealText(int[][] image) {
-        return Helper.fail("NOT IMPLEMENTED");
+        boolean[] bits = revealBitArray(image);
+        boolean[] transfer = new boolean[8];
+        byte[] values = new byte[bits.length / 8];
+        for(int i = 0; i < bits.length / 8; i++){
+            for(int j = 0; j < 8; j++){
+                System.arraycopy(bits, 8 * i , transfer, j , 8);
+            }
+            values[i] = Bit.toByte(transfer);
+        }
+        return values;
     }
 
 }

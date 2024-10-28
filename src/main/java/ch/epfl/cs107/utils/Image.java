@@ -125,14 +125,12 @@ public final class Image {
      * @return the gray scale version of the image
      */
     public static int[][] toGray(int[][] image){
-
         int[][] grayScale = new int[image.length][image[0].length];
         for (int i = 0; i < image.length; i++) {
             for (int j = 0; j < image[i].length; j++) {
                 grayScale[i][j] = Image.gray(image[i][j]);
             }
         }
-
         return grayScale;
     }
 
@@ -150,7 +148,6 @@ public final class Image {
                 binary[i][j] = binary(image[i][j], threshold);
             }
         }
-
         return binary;
     }
 
