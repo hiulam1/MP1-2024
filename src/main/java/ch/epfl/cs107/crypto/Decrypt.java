@@ -2,6 +2,8 @@ package ch.epfl.cs107.crypto;
 
 import ch.epfl.cs107.Helper;
 
+import javax.crypto.Cipher;
+
 import static ch.epfl.cs107.utils.Text.*;
 import static ch.epfl.cs107.utils.Image.*;
 import static ch.epfl.cs107.utils.Bit.*;
@@ -35,7 +37,14 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] caesar(byte[] cipher, byte key) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] decrypted = new byte[cipher.length];
+        for (int i = 0; i < cipher.length; i++) {
+            int result = cipher[i] - key;
+
+            decrypted[i] = (byte) result;
+        }
+
+        return decrypted;
     }
 
     // ============================================================================================
@@ -49,7 +58,13 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] vigenere(byte[] cipher, byte[] keyword) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] decrypted = new byte[cipher.length];
+        for (int i = 0; i < cipher.length; i++) {
+            int modulo = i % keyword.length;
+            decrypted[i] = (byte) (cipher[i] - keyword[modulo]);
+        }
+        return decrypted;
+
     }
 
     // ============================================================================================
@@ -63,7 +78,38 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] cbc(byte[] cipher, byte[] iv) {
-        return Helper.fail("NOT IMPLEMENTED");
+        int blockSize = iv.length;
+        int numberBlocks = cipher.length / blockSize;
+        int remainingBytes = cipher.length % blockSize;
+
+        byte[] encrypted = new byte[cipher.length];
+        byte[] previousPad = iv.clone();
+
+        for (int block = 0; block < numberBlocks ; block++) {
+            int beg = block * blockSize;
+
+            byte[] currentPlainBlock = new byte[blockSize];
+            System.arraycopy(cipher, beg, currentPlainBlock, 0, blockSize);
+
+            byte[] currentEncodedBlock = oneTimePad(currentPlainBlock, previousPad);
+            previousPad = currentEncodedBlock;
+            System.arraycopy(currentEncodedBlock, 0, encrypted, beg, blockSize);
+        }
+        if (remainingBytes > 0) {
+            int beg = blockSize * numberBlocks;
+
+            byte[] currentPlainBlock = new byte[remainingBytes];
+            System.arraycopy(cipher, beg, currentPlainBlock, 0, remainingBytes);
+            byte[] pad = new byte[remainingBytes];
+
+            System.arraycopy(previousPad, 0, pad, 0, remainingBytes);
+
+            byte[] finalEncrypted = oneTimePad(currentPlainBlock, pad);
+
+            System.arraycopy(finalEncrypted, 0, encrypted, beg, remainingBytes);
+        }
+        return encrypted;
+
     }
 
     // ============================================================================================
@@ -77,7 +123,12 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] xor(byte[] cipher, byte key) {
-        return Helper.fail("NOT IMPLEMENTED");
+        byte[] decrypted = new byte[cipher.length];
+        for (int i = 0; i < cipher.length; i++) {
+            decrypted[i] = (byte) (cipher[i] ^ key);
+        }
+
+        return decrypted;
     }
 
     // ============================================================================================
@@ -91,7 +142,13 @@ public final class Decrypt {
      * @return decoded message
      */
     public static byte[] oneTimePad(byte[] cipher, byte[] pad) {
-        return Helper.fail("NOT IMPLEMENTED");
+        assert cipher.length == pad.length: "pad length must be the same as message length";
+        byte[] decrypted = new byte[cipher.length];
+        for (int i = 0; i < cipher.length; i++) {
+            decrypted[i] = (byte) (cipher[i] ^ pad[i]);
+        }
+
+        return decrypted;
     }
 
 }
