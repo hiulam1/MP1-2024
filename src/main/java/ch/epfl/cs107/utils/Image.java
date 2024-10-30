@@ -125,6 +125,7 @@ public final class Image {
      * @return the gray scale version of the image
      */
     public static int[][] toGray(int[][] image){
+        assert image != null: "image cannot be empty";
         int[][] grayScale = new int[image.length][image[0].length];
         for (int i = 0; i < image.length; i++) {
             for (int j = 0; j < image[i].length; j++) {
@@ -142,6 +143,7 @@ public final class Image {
      * @return binary representation of the image
      */
     public static boolean[][] toBinary(int[][] image, int threshold){
+        assert image != null: "image cannot be empty";
         boolean[][] binary = new boolean[image.length][image[0].length];
         for (int i = 0; i < image.length; i++) {
             for (int j = 0; j < image[i].length; j++) {
@@ -158,6 +160,7 @@ public final class Image {
      * @return <b>gray ARGB</b> representation
      */
     public static int[][] fromGray(int[][] image){
+        assert image != null: "image cannot be empty";
         int[][] colored = new int[image.length][image[0].length];
         byte alpha = (byte) 255;
         for (int i = 0; i < image.length; i++) {
@@ -177,6 +180,7 @@ public final class Image {
      * @return <b>black and white ARGB</b> representation
      */
     public static int[][] fromBinary(boolean[][] image){
+        assert image != null: "image cannot be empty";
         int[][] result = new int[image.length][image[0].length];
         for (int i = 0; i < image.length; i++) {
             for (int j = 0; j < image[i].length; j++) {
