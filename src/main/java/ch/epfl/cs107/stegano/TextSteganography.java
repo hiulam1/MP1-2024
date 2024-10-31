@@ -35,6 +35,8 @@ public class TextSteganography {
      * @return ARGB image with the message embedded
      */
     public static int[][] embedBitArray(int[][] cover, boolean[] message) {
+        assert cover[][] != null: "cannot be empty";
+        assert message[] != null: "cannot be empty";
         assert message.length <= cover.length * cover[0].length;
         int[][] newImage = new int[cover.length][cover[0].length];
         for(int i = 0; i < cover.length; i++){
@@ -55,6 +57,7 @@ public class TextSteganography {
      * @return extracted message
      */
     public static boolean[] revealBitArray(int[][] image) {
+        assert image != null: "image cannot be empty";
         boolean[] bits = new boolean[image.length * image[0].length];
         int index = 0;
         for(int i = 0; i < image.length; i ++){
@@ -78,6 +81,8 @@ public class TextSteganography {
      * @return ARGB image with the message embedded
      */
     public static int[][] embedText(int[][] cover, byte[] message) {
+        assert cover[][] != null: "cannot be empty";
+        assert message[] != null: "cannot be empty";
         int[][] newImage = new int[cover.length][cover[0].length];
         boolean[] bits = new boolean[message.length * 8];
         for (int i = 0; i < message.length; i++) {
@@ -94,6 +99,7 @@ public class TextSteganography {
      * @return extracted message
      */
     public static byte[] revealText(int[][] image) {
+        assert image != null: "image cannot be empty";
         boolean[] bits = revealBitArray(image);
         boolean[] transfer = new boolean[8];
         byte[] values = new byte[bits.length / 8];
