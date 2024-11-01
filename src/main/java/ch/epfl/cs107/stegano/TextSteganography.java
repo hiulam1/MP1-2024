@@ -47,7 +47,7 @@ public class TextSteganography {
                 int column = i % cover[0].length;
                 newImage[row][column] = embedInLSB(cover[row][column], message[i]);
             } else{
-                continue;
+                break;
             }
         }
         return newImage;
