@@ -95,15 +95,17 @@ public class TextSteganography {
      */
     public static byte[] revealText(int[][] image) {
         boolean[] bits = revealBitArray(image);
-        boolean[] transfer = new boolean[8];
+        boolean[][] transfer = new boolean[bits.length/8][8];
         byte[] values = new byte[bits.length / 8];
         for(int i = 0; i < bits.length / 8; i++){
             for(int j = 0; j < 8; j++){
-                System.arraycopy(bits, 8 * i , transfer, j , 8);
+                transfer[i][j] = bits[8 * i + j];
+                //System.arraycopy(bits, 8 * i , transfer, j , 8);
             }
-            values[i] = Bit.toByte(transfer);
+            values[i] = Bit.toByte(transfer[i]);
         }
         return values;
     }
+
 
 }
