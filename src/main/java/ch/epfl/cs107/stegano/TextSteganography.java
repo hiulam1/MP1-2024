@@ -35,7 +35,6 @@ public class TextSteganography {
      * @return ARGB image with the message embedded
      */
     public static int[][] embedBitArray(int[][] cover, boolean[] message) {
-        assert message.length <= cover.length * cover[0].length;
         int[][] newImage = new int[cover.length][cover[0].length];
         for(int i = 0; i < cover.length; i++){
             for(int j = 0; j < cover[0].length; j++){
@@ -43,9 +42,13 @@ public class TextSteganography {
             }
         }
         for(int i = 0; i < message.length; i++) {
-            int row = i / cover[0].length;
-            int column = i % cover[0].length;
-            newImage[row][column] = embedInLSB(cover[row][column], message[i]);
+            if (i <= cover.length * cover[0].length){
+                int row = i / cover[0].length;
+                int column = i % cover[0].length;
+                newImage[row][column] = embedInLSB(cover[row][column], message[i]);
+            } else{
+                break;
+            }
         }
         return newImage;
     }
@@ -95,15 +98,17 @@ public class TextSteganography {
      */
     public static byte[] revealText(int[][] image) {
         boolean[] bits = revealBitArray(image);
-        boolean[] transfer = new boolean[8];
+        boolean[][] transfer = new boolean[bits.length/8][8];
         byte[] values = new byte[bits.length / 8];
         for(int i = 0; i < bits.length / 8; i++){
             for(int j = 0; j < 8; j++){
-                System.arraycopy(bits, 8 * i , transfer, j , 8);
+                transfer[i][j] = bits[8 * i + j];
+                //System.arraycopy(bits, 8 * i , transfer, j , 8);
             }
-            values[i] = Bit.toByte(transfer);
+            values[i] = Bit.toByte(transfer[i]);
         }
         return values;
     }
+
 
 }
